@@ -2,7 +2,7 @@
 
 This GitHub repository provides additional details and the code for our paper accepted at the 2023 NeurIPS Workshop on AI for Scientific Discovey: From Theory to Practice.  
 The paper can be accessed here:  
-[A Transformer Model for Symbolic Regression towards Scientific Discovery](https://ai4sciencecommunity.github.io/neurips2023.html)
+[A Transformer Model for Symbolic Regression towards Scientific Discovery](https://ai4sciencecommunity.github.io/neurips23.html)
 
 ## Contents of this repository
 
@@ -13,7 +13,7 @@ The paper can be accessed here:
 - `README.md` this file
 - `evaluate_model.py` Python script used when testing our best Symbolic Transformer using the [SRSD datasets](https://huggingface.co/papers/2206.10540)
 - `train_symbolic_transformer.py` Python script used (on GPUs) for training using our synthetic datasets
-- `tutorial.ipynb` Jupyter Notebook for a demonstration using our best Symbolic Transformer (you might want to start from here!)
+- `tutorial.ipynb` Jupyter Notebook for a demonstration using our best Symbolic Transformer. **You might want to start from here!**
 
 ## Citation
 
