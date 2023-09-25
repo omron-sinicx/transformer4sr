@@ -1,0 +1,34 @@
+# Number of initial trials
+NB_TRAILS: 10000
+# Minimum number of nodes (for the first crude filtering)
+NB_NODES_MIN: 2
+# Maximum number of nodes (for the first crude filtering)
+NB_NODES_MAX: 15
+
+
+# Maximum number of seconds to wait when SymPy tries to simplify
+MAX_SEC_WAIT_SIMPLIFY: 5
+# Minimum number of nodes (for the first crude filtering)
+NB_NESTED_MAX: 6
+# Minimum number of constants in the final sequences
+NB_CONSTANTS_MIN: 1
+# Maximum number of constants in the final sequences
+NB_CONSTANTS_MAX: 1
+# Maximum number of variables
+NB_VARIABLES_MAX: 6
+# Maximum sequence length possible (otherwise discard)
+SEQ_LENGTH_MAX: 30
+
+
+# Number of times we evaluate constants for each unique equation  -- BEFORE 100
+NB_SAMPLING_PER_EQ: 25
+# When sampling, if at least one point is above this magnitude, abort  -- BEFORE 1.0e12
+ORDER_OF_MAG_LIMIT: 1.0e+9
+# Number of sample points for the datasets  -- BEFORE 200
+NB_SAMPLE_PTS: 50
+# Variable representation: 'normal' is (y, x1, x2, ...), 'log' is log(abs(y, x1, x2, ...)), or 'both'
+VARIABLE_TYPE: 'normal'
+# Path output
+PATH_OUT: 'data'
+# Number zfill zeros
+NB_ZFILL: 8
