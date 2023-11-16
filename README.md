@@ -18,10 +18,11 @@ The paper can be accessed here:
 ## Citation
 
 ```
-@article{lalande2023,
-  title={A Transformer Model for Symbolic Regression towards Scientific Discovery},
-  author={Lalande, Florian and Matsubara, Yoshimoto and Chiba, Naoya and Taniai, Tatsunori and Igarashi, Ryo and Ushiku, Yoshitaka},
-  journal={arXiv preprint arXiv:BLABLABLABLABLABLA},
-  year={2023}
+@inproceedings{lalande2023,
+  title = {A Transformer Model for Symbolic Regression towards Scientific Discovery},
+  author = {Florian Lalande and Yoshitomo Matsubara and Naoya Chiba and Tatsunori Taniai and Ryo Igarashi and Yoshitaka Ushiku},
+  booktitle = {NeurIPS 2023 AI for Science Workshop},
+  year = {2023},
+  url = {https://openreview.net/forum?id=AIfqWNHKjo},
 }
 ```
