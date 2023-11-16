@@ -18,7 +18,7 @@ The paper can be accessed here:
 
 ## Setup
 
-Install dependencies (we used Python 3.11.3)
+Install dependencies (we used Python 3.11.3)  
 ``
 pip install -r requirements.txt
 ``
