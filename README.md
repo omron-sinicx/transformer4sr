@@ -1,4 +1,4 @@
-# The Symbolic Transformer
+# A Transformer Model for Symbolic regression towards Scientific Discovery
 
 This GitHub repository provides additional details and the code for our paper accepted at the 2023 NeurIPS Workshop on AI for Scientific Discovey: From Theory to Practice.  
 The paper can be accessed here:  
