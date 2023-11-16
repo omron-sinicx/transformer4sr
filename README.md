@@ -2,7 +2,7 @@
 
 This GitHub repository provides additional details and the code for our paper accepted at the 2023 NeurIPS Workshop on AI for Scientific Discovey: From Theory to Practice.  
 The paper can be accessed here:  
-[A Transformer Model for Symbolic Regression towards Scientific Discovery](https://ai4sciencecommunity.github.io/neurips23.html)
+[A Transformer Model for Symbolic Regression towards Scientific Discovery (OpenReview)](https://openreview.net/forum?id=AIfqWNHKjo)
 
 ## Contents of this repository
 
