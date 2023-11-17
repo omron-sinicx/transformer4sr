@@ -21,7 +21,7 @@ torch.cuda.empty_cache()  # Clear cache to free space
 ## HYPER-PARAMS
 ## ------------
 
-with open('config/train_symbolic_transformer.yaml', 'r') as f:
+with open('config/train_transformer.yaml', 'r') as f:
     config = yaml.safe_load(f)
 
 PATH_DATA = config['PATH_DATA']
@@ -142,11 +142,11 @@ print(f'Nb val steps per epoch = {nb_val_step_per_epoch}')
 print(f'Nb final test steps = {nb_test_step}')
 
 
-## --------------------------
-## BUILD SYMBOLIC TRANSFORMER
-## --------------------------
+## -----------------------
+## BUILD TRANSFORMER MODEL
+## -----------------------
 
-symbolic_transformer = TransformerModel(
+transformer = TransformerModel(
     enc_type=ENC_TYPE,
     nb_samples=nb_samples,  # Number of samples oar dataset
     max_nb_var=torch_inputs.shape[2],  # Max number of variables (including y)
@@ -162,7 +162,7 @@ symbolic_transformer = TransformerModel(
 print('')
 print(f'Max number of variables = {torch_inputs.shape[2]}')
 print(f'Encoder type = {ENC_TYPE}')
-total_nb_params = count_nb_params(symbolic_transformer, print_all=False)
+total_nb_params = count_nb_params(transformer, print_all=False)
 print(f'Total number params = {total_nb_params}')
 
 
@@ -172,8 +172,8 @@ print(f'Total number params = {total_nb_params}')
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'\nDevice = {device}\n')
-symbolic_transformer = torch.nn.DataParallel(symbolic_transformer)
-symbolic_transformer.to(device)
+transformer = torch.nn.DataParallel(transformer)
+transformer.to(device)
 torch_inputs = torch_inputs.to(device)
 torch_targets = torch_targets.to(device)
 
@@ -183,7 +183,7 @@ torch_targets = torch_targets.to(device)
 ## -------------------------------------
 
 optimizer = torch.optim.Adam(
-    symbolic_transformer.parameters(),
+    transformer.parameters(),
     lr=1.0,
     betas=(0.9, 0.98),
     eps=1e-9,
@@ -201,7 +201,7 @@ lr_scheduler = torch.optim.lr_scheduler.LambdaLR(
 
 def training_step(trainX, trainY, target):
     optimizer.zero_grad()
-    prediction = symbolic_transformer(trainX, trainY)
+    prediction = transformer(trainX, trainY)
     loss = compute_transformer_loss(prediction.transpose(-1, -2), target)  # transpose to compute loss
     acc = compute_transformer_accuracy(prediction, target)
     loss.backward()
@@ -210,7 +210,7 @@ def training_step(trainX, trainY, target):
     return loss, acc
 
 def validation_step(valX, valY, target):
-    prediction = symbolic_transformer(valX, valY)
+    prediction = transformer(valX, valY)
     loss = compute_transformer_loss(prediction.transpose(-1, -2), target)  # transpose to compute loss
     acc = compute_transformer_accuracy(prediction, target)
     return loss, acc
@@ -228,7 +228,7 @@ list_val_acc = []
 print('START TRAINING! [' + time.strftime('%Y-%m-%d %H:%M:%S') + ']\n', flush=True)
 
 for epoch in range(NB_EPOCHS):
-    symbolic_transformer.train()  # activate training mode
+    transformer.train()  # activate training mode
     np.random.shuffle(train_idx)
     print(f'== Epoch {epoch+1}/{NB_EPOCHS} == ', end='')
     list_train_loss.append([])
@@ -244,7 +244,7 @@ for epoch in range(NB_EPOCHS):
         list_train_loss[epoch].append(loss.to('cpu').detach().numpy())
         list_train_acc[epoch].append(acc.to('cpu').detach().numpy())
     
-    symbolic_transformer.eval()  # deactivate training mode
+    transformer.eval()  # deactivate training mode
     np.random.shuffle(val_idx)
     list_val_loss.append([])
     list_val_acc.append([])
@@ -273,7 +273,7 @@ for epoch in range(NB_EPOCHS):
 
 list_test_loss = []
 list_test_acc = []
-symbolic_transformer.eval()  # deactivate training mode
+transformer.eval()  # deactivate training mode
 for step in range(nb_test_step):
     batch_idx = test_idx[(BATCH_SIZE*step):(BATCH_SIZE*(step+1))]
     testX = torch_inputs[batch_idx]
@@ -301,5 +301,5 @@ np.save(PATH_OUT+'/val_loss.npy', np.array(list_val_loss))
 np.save(PATH_OUT+'/val_acc.npy', np.array(list_val_acc))
 np.save(PATH_OUT+'/test_loss.npy', np.array(list_test_loss))
 np.save(PATH_OUT+'/test_acc.npy', np.array(list_test_acc))
-torch.save(symbolic_transformer.state_dict(), PATH_OUT+'/model_weights.pt')
+torch.save(transformer.state_dict(), PATH_OUT+'/model_weights.pt')
 print(f'Finish \o/ Bye!')
