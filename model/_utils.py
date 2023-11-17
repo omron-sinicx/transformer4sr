@@ -8,9 +8,9 @@ import numpy as np
 
 
 
-#################################################
-## FUNCTIONS TO TRAIN THE SYMBOLIC TRANSFORMER ##
-#################################################
+##############################################
+## FUNCTIONS TO TRAIN THE TRANSFORMER MODEL ##
+##############################################
 
 
 def count_nb_params(model, print_all=False):
@@ -150,7 +150,7 @@ def beam_search(prediction, k):
     """
     Returns the best k sequences following beam-search.
     Parameters:
-      - prediction: output of the symbolic transformer.
+      - prediction: output of the transformer model.
       shape = (batch_size, seq_length, vocab_size)
       - k: Size of the beam. Corresponds to the number of
       returned sequences.
@@ -225,7 +225,7 @@ def compute_solution_rate(prediction, targets, k=5):
     the ground truth is in the top-k equations returned by the
     beam-search algorithm.
     Parameters:
-      - prediction: output of the symbolic transformer.
+      - prediction: output of the transformer model.
       shape = (batch_size, seq_length, vocab_size)
       - targets: ground truth for the labels.
       shape = (batch_size, seq_length)

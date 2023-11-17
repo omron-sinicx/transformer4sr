@@ -27,8 +27,8 @@ hixon_state_dict = torch.load(path_model_weights, map_location=torch.device('cpu
 print(f'\nMODEL: {model_name}')
 
 
-# Initiate the ST (same number of parameters as hixon_state_dict weights)
-symbolic_transformer = TransformerModel(
+# Initiate the Transformer model (same number of parameters as hixon_state_dict weights)
+transformer = TransformerModel(
     enc_type=MODEL_ENC_TYPE,
     nb_samples=50,  # Number of samples par dataset
     max_nb_var=7,  # Max number of variables
@@ -41,7 +41,7 @@ symbolic_transformer = TransformerModel(
     dropout=0.25,
 )
 print('')
-total_nb_params = count_nb_params(symbolic_transformer, print_all=False)
+total_nb_params = count_nb_params(transformer, print_all=False)
 print(f'Total number params = {total_nb_params}')
 
 
@@ -51,8 +51,8 @@ for key in hixon_state_dict.keys():
     my_state_dict[key[7:]] = hixon_state_dict[key]
 
 
-out = symbolic_transformer.load_state_dict(my_state_dict, strict=True)
-symbolic_transformer.eval()  # deactivate training mode
+out = transformer.load_state_dict(my_state_dict, strict=True)
+transformer.eval()  # deactivate training mode
 print(out)
 
 
@@ -61,17 +61,17 @@ C, x1, x2, x3, x4, x5, x6 = sympy.symbols('C, x1, x2, x3, x4, x5, x6', real=True
 
 
 
-def decode_with_symbolic_transformer(symbolic_transformer, dataset):
+def decode_with_transformer(transformer, dataset):
     """
     Greedy decode using ST.
     Decode until the equation tree is completed.
     Parameters:
-      - symbolic_transformer: torch Module object
+      - transformer: torch Module object
       - dataset: tabular dataset
       shape = (batch_size=1, nb_samples=50, nb_max_var=7, 1)
     """
-    encoder_output = symbolic_transformer.encoder(dataset)  # Encoder output is fixed for the batch
-    seq_length = symbolic_transformer.decoder.positional_encoding.seq_length
+    encoder_output = transformer.encoder(dataset)  # Encoder output is fixed for the batch
+    seq_length = transformer.decoder.positional_encoding.seq_length
     decoder_output = torch.zeros((dataset.shape[0], seq_length+1), dtype=torch.int64)  # initialize Decoder output
     decoder_output[:, 0] = 1
     is_complete = torch.zeros(dataset.shape[0], dtype=torch.bool)  # check when decoding is finished
@@ -80,12 +80,12 @@ def decode_with_symbolic_transformer(symbolic_transformer, dataset):
         padding_mask = torch.eq(decoder_output[:, :-1], 0).unsqueeze(1).unsqueeze(1)
         future_mask = torch.triu(torch.ones(seq_length, seq_length), diagonal=1).bool()
         mask_dec = torch.logical_or(padding_mask, future_mask)
-        temp = symbolic_transformer.decoder(
+        temp = transformer.decoder(
             target_seq=decoder_output[:, :-1],
             mask_dec=mask_dec,
             output_enc=encoder_output,
         )
-        temp = symbolic_transformer.last_layer(temp)
+        temp = transformer.last_layer(temp)
         decoder_output[:, n1+1] = torch.where(is_complete, 0, torch.argmax(temp[:, n1], axis=-1))
         for n2 in range(dataset.shape[0]):
             if is_tree_complete(decoder_output[n2, 1:]):
@@ -181,7 +181,7 @@ def evaluate_srsd_batch(difficulty, nb_repeat):
                     continue
             encoder_input = torch.Tensor(new_dataset).unsqueeze(0).unsqueeze(-1)
 
-            decoder_output = decode_with_symbolic_transformer(symbolic_transformer, encoder_input)
+            decoder_output = decode_with_transformer(transformer, encoder_input)
             if torch.sum(decoder_output[0, 1:])==0:  # prediction didn't work...
                 all_zss_dist[i1, i2] = np.nan
                 continue
