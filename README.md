@@ -8,13 +8,13 @@ The paper can be accessed here:
 
 - `best_model_weights/` directory with the weights of our pretained models
 - `datasets/` directory code to generate the training datasets
-- `model/` directory with the Symbolic Transformer ANN architecture
+- `model/` directory with the Transformer architecture
 - `.gitignore`
 - `README.md` this file
-- `evaluate_model.py` Python script used when testing our best Symbolic Transformer using the [SRSD datasets](https://huggingface.co/papers/2206.10540)
+- `evaluate_model.py` Python script used when testing our best Transformer model using the [SRSD datasets](https://huggingface.co/papers/2206.10540)
 - `requirements.txt` Dependencies
-- `train_symbolic_transformer.py` Python script used (on GPUs) for training using our synthetic datasets
-- `tutorial.ipynb` Jupyter Notebook for a demonstration using our best Symbolic Transformer. **You might want to start from here!**
+- `train_transformer.py` Python script used (on GPUs) for training using our synthetic datasets
+- `tutorial.ipynb` Jupyter Notebook for a demonstration using our best Transformer. **You might want to start from here!**
 
 ## Setup
 
