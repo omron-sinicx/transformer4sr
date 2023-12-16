@@ -18,10 +18,10 @@ from datasets._utils import from_sympy_to_sequence, from_sequence_to_sympy, firs
 MODEL_ENC_TYPE = 'mix'
 LABEL_SMOOTHING = True
 
-model_name = f'{MODEL_ENC_TYPE}_data_new_normal'
+model_name = f'best_model_weights/{MODEL_ENC_TYPE}'
 if LABEL_SMOOTHING:
     model_name += '_label_smoothing'
-path_model_weights = f'../from_hixon/{model_name}/model_weights.pt'
+path_model_weights = f'{model_name}/model_weights.pt'
 hixon_state_dict = torch.load(path_model_weights, map_location=torch.device('cpu'))
 
 print(f'\nMODEL: {model_name}')
